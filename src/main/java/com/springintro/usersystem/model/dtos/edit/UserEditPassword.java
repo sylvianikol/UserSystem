@@ -1,35 +1,36 @@
-package com.springintro.usersystem.model.dtos;
+package com.springintro.usersystem.model.dtos.edit;
+
+import com.springintro.usersystem.validators.ValidPassword;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import static com.springintro.usersystem.constants.GlobalMessages.*;
 
-public class UserLoginDto {
+public class UserEditPassword {
 
-    private String username;
+    private Long id;
     private String password;
 
-    public UserLoginDto() {
+    public UserEditPassword() {
     }
 
-    public UserLoginDto(String username, String password) {
-        this.username = username;
+    public UserEditPassword(Long id, String password) {
+        this.id = id;
         this.password = password;
     }
 
-    @NotEmpty(message = USERNAME_NOT_EMPTY)
-    @NotNull(message = USERNAME_NOT_NULL)
-    public String getUsername() {
-        return username;
+    public Long getId() {
+        return id;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @NotEmpty(message = PASSWORD_NOT_EMPTY)
     @NotNull(message = PASSWORD_NOT_NULL)
+    @ValidPassword(message = PASSWORD_NOT_VALID)
     public String getPassword() {
         return password;
     }

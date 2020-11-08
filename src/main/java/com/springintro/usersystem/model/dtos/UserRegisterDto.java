@@ -4,6 +4,7 @@ import com.springintro.usersystem.validators.ExtendedEmailValidator;
 import com.springintro.usersystem.validators.ValidPassword;
 import org.hibernate.validator.constraints.Length;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
@@ -26,6 +27,7 @@ public class UserRegisterDto {
         this.registeredOn = LocalDateTime.now();
     }
 
+    @NotEmpty(message = USERNAME_NOT_EMPTY)
     @NotNull(message = USERNAME_NOT_NULL)
     @Length(min = 4, max = 30, message = USERNAME_LENGTH)
     public String getUsername() {

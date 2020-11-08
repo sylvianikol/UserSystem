@@ -1,4 +1,4 @@
-package com.springintro.usersystem.model.dtos;
+package com.springintro.usersystem.model.dtos.edit;
 
 import com.springintro.usersystem.validators.ExtendedEmailValidator;
 

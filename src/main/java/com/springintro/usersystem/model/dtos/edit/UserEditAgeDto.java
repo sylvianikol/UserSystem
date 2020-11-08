@@ -1,4 +1,4 @@
-package com.springintro.usersystem.model.dtos;
+package com.springintro.usersystem.model.dtos.edit;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;

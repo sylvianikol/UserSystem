@@ -2,6 +2,7 @@ package com.springintro.usersystem.services.impl;
 
 import com.springintro.usersystem.io.OutputWriter;
 import com.springintro.usersystem.model.dtos.*;
+import com.springintro.usersystem.model.dtos.edit.*;
 import com.springintro.usersystem.model.entities.User;
 import com.springintro.usersystem.repositories.UserRepository;
 import com.springintro.usersystem.services.UserService;
@@ -113,6 +114,68 @@ public class UserServiceImpl implements UserService {
         } else {
             this.writer.write(this.validationUtil.getViolations(userEditEmailDto));
         }
+    }
+
+    @Override
+    public void setNewName(UserEditNameDto userEditNameDto) {
+        if (this.validationUtil.isValid(userEditNameDto)) {
+            User user = this.userRepository.findById(userEditNameDto.getId()).orElse(null);
+            if (user != null) {
+                user.setFirstName(userEditNameDto.getFirstName());
+                user.setLastName(userEditNameDto.getLastName());
+                this.userRepository.saveAndFlush(user);
+                this.writer.writeLine(NAMES_EDITED);
+            } else {
+                this.writer.writeLine(String.format(USER_ID_NOT_FOUND, userEditNameDto.getId()));
+            }
+
+        } else {
+            this.writer.writeLine(INVALID_INPUT);
+            this.writer.write(this.validationUtil.getViolations(userEditNameDto));
+        }
+    }
+
+    @Override
+    public void setNewUsername(UserEditUsernameDto userEditUsernameDto) {
+        if (this.validationUtil.isValid(userEditUsernameDto)) {
+            User user = this.userRepository.findById(userEditUsernameDto.getId()).orElse(null);
+            if (user != null) {
+                user.setUsername(userEditUsernameDto.getUsername());
+                this.userRepository.saveAndFlush(user);
+                this.writer.writeLine(USERNAME_EDITED);
+            } else {
+                this.writer.writeLine(String.format(USER_ID_NOT_FOUND, userEditUsernameDto.getId()));
+            }
+
+        } else {
+            this.writer.writeLine(INVALID_INPUT);
+            this.writer.write(this.validationUtil.getViolations(userEditUsernameDto));
+        }
+    }
+
+    @Override
+    public void setNewPassword(UserEditPassword userEditPassword) {
+        if (this.validationUtil.isValid(userEditPassword)) {
+            User user = this.userRepository.findById(userEditPassword.getId()).orElse(null);
+            if (user != null) {
+                user.setPassword(userEditPassword.getPassword());
+                this.userRepository.saveAndFlush(user);
+                this.writer.writeLine(PASSWORD_EDITED);
+            } else {
+                this.writer.writeLine(String.format(USER_ID_NOT_FOUND, userEditPassword.getId()));
+            }
+
+        } else {
+            this.writer.writeLine(INVALID_INPUT);
+            this.writer.write(this.validationUtil.getViolations(userEditPassword));
+        }
+    }
+
+    @Override
+    public boolean isValidPassword(UserEditDto userEditDto, String password) {
+        return this.userRepository
+                .findByIdAndPassword(userEditDto.getId(), password)
+                .orElse(null) != null;
     }
 
     private boolean existsUser(String username, String email) {

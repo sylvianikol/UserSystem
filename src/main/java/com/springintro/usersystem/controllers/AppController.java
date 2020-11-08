@@ -6,14 +6,13 @@ import com.springintro.usersystem.io.InputReader;
 import com.springintro.usersystem.io.KeyIn;
 import com.springintro.usersystem.io.OutputWriter;
 import com.springintro.usersystem.model.dtos.*;
+import com.springintro.usersystem.model.dtos.edit.*;
 import com.springintro.usersystem.services.CountryService;
 import com.springintro.usersystem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Controller;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 
@@ -49,9 +48,6 @@ public class AppController implements CommandLineRunner {
     public void run(String... args) throws IOException, ParseException {
 
         // USERS SYSTEM Exercise
-
-        // Seed Countries and Towns
-//        this.seedCountriesWithTowns();
 
         Command command = START;
 
@@ -137,6 +133,15 @@ public class AppController implements CommandLineRunner {
                 case 3:
                     this.editName(userEditDto);
                     break;
+                case 4:
+                    this.editUsername(userEditDto);
+                    break;
+                case 5:
+                    this.editPassword(userEditDto);
+                    break;
+                case 6:
+                    this.editAddress(userEditDto);
+                    break;
                 case 7:
                     command = BACK;
                     break;
@@ -149,11 +154,64 @@ public class AppController implements CommandLineRunner {
         return command;
     }
 
+    private void editAddress(UserEditDto userEditDto) throws IOException {
+        this.writer.writeLine(ENTER_COUNTRY);
+        String country = this.reader.readLine();
+
+        if (this.countryService.existsCountry(country)) {
+            // todo:
+        } else {
+            // todo:
+        }
+    }
+
+    private void editPassword(UserEditDto userEditDto) throws IOException {
+        String password;
+        String check;
+
+        do {
+            this.writer.writeLine(ENTER_NEW_PASSWORD);
+            password = this.reader.readLine();
+            this.writer.writeLine(REPEAT_PASSWORD);
+            check = this.reader.readLine();
+
+            if (!password.equals(check)) {
+                this.writer.writeLine(PASSWORD_MISMATCH);
+            }
+        } while (!password.equals(check));
+
+        this.writer.writeLine(ENTER_OLD_PASSWORD);
+        String oldPassword = this.reader.readLine();
+
+        if (this.userService.isValidPassword(userEditDto, oldPassword)) {
+            UserEditPassword userEditPassword =
+                    new UserEditPassword(userEditDto.getId(), password);
+            this.userService.setNewPassword(userEditPassword);
+        } else {
+            this.writer.writeLine("Old " + PASSWORD_NOT_VALID);
+        }
+    }
+
+    private void editUsername(UserEditDto userEditDto) throws IOException {
+        this.writer.writeLine(ENTER_NEW_USERNAME);
+        String username = this.reader.readLine();
+
+        UserEditUsernameDto userEditUsernameDto =
+                new UserEditUsernameDto(userEditDto.getId(), username);
+
+        this.userService.setNewUsername(userEditUsernameDto);
+    }
+
     private void editName(UserEditDto userEditDto) throws IOException {
         this.writer.writeLine(ENTER_FIRST_NAME);
         String firstName = this.reader.readLine();
         this.writer.writeLine(ENTER_LAST_NAME);
         String lastName = this.reader.readLine();
+
+        UserEditNameDto userEditNameDto =
+                new UserEditNameDto(userEditDto.getId(), firstName, lastName);
+
+        this.userService.setNewName(userEditNameDto);
     }
 
     private void editEmail(UserEditDto userEditDto) throws IOException {
@@ -176,9 +234,9 @@ public class AppController implements CommandLineRunner {
         UserEditDto userEditDto = null;
 
         while (userEditDto == null) {
-            this.writer.writeLine("Enter username:");
+            this.writer.writeLine(ENTER_USERNAME);
             String username = this.reader.readLine();
-            this.writer.writeLine("Enter password:");
+            this.writer.writeLine(ENTER_PASSWORD);
             String password = this.reader.readLine();
 
             UserLoginDto userLoginDto = new UserLoginDto(username, password);
@@ -210,15 +268,6 @@ public class AppController implements CommandLineRunner {
         }
 
         return output;
-    }
-
-    private void seedCountriesWithTowns() throws FileNotFoundException {
-        CountrySeedDto[] countrySeedDtos = this.gson
-                .fromJson(new FileReader(COUNTRIES_FILE_PATH), CountrySeedDto[].class);
-
-        this.countryService.seedCountries(countrySeedDtos);
-
-        this.writer.writeLine(COUNTRIES_SEEDED);
     }
 
 }

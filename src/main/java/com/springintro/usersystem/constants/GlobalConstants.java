@@ -2,9 +2,6 @@ package com.springintro.usersystem.constants;
 
 public class GlobalConstants {
 
-    public static final String COUNTRIES_FILE_PATH =
-            "src/main/resources/json/countries.json";
-
     public static final String MAIN_MENU =
             "%n|--------------------------|%n" +
                     "|         MAIN MENU        |%n" +
@@ -32,4 +29,7 @@ public class GlobalConstants {
                     "|        5. Edit Password  |%n" +
                     "|        6. Edit Address   |%n" +
                     "|        7. << Back        |%n";
+
+    public static final String NAME_REGEX =
+            "[A-Za-z]{1}[A-Za-z\\s\\.\\-]+";
 }
