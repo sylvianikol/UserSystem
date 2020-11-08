@@ -1,11 +1,14 @@
 package com.springintro.usersystem.services;
 
-import com.springintro.usersystem.model.dtos.UserLoginDto;
-import com.springintro.usersystem.model.dtos.UserRegisterDto;
+import com.springintro.usersystem.model.dtos.*;
 
 public interface UserService {
 
     String registerUser(UserRegisterDto userRegisterDto);
 
-    String loginUser(UserLoginDto userLoginDto);
+    UserEditDto loginUser(UserLoginDto userLoginDto);
+
+    void setNewAge(UserEditAgeDto userEditAgeDto);
+
+    void setNewEmail(UserEditEmailDto userEditEmailDto);
 }

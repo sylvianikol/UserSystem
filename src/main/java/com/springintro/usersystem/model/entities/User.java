@@ -101,8 +101,6 @@ public class User extends BaseEntity {
         this.lastTimeLoggedIn = lastTimeLoggedIn;
     }
 
-    @Min(1)
-    @Max(120)
     public Integer getAge() {
         return age;
     }

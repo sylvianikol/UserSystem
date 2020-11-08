@@ -35,7 +35,33 @@ public class GlobalMessages {
     public static final String USER_NOT_FOUND =
             "ERROR! User '%s' not found!";
 
-    public static final String USER_LOGGED_IN =
-            "Hello, %s! You are logged in!";
+    public static final String USER_ID_NOT_FOUND =
+                "ERROR! User with Id='%d' not found in database!";
 
+    public static final String USER_LOGGED_IN =
+            "Hello, %s! You are now logged in!";
+
+    public static final String PROMPT =
+            " Select option: ";
+
+    public static final String COMMAND_NOT_VALID =
+            "Not a valid menu option!";
+
+    public static final String ENTER_AGE =
+            "Enter your age:";
+
+    public static final String AGE_EDITED =
+            "Age edited successfully!";
+
+    public static final String ENTER_EMAIL =
+            "Enter new email:";
+
+    public static final String EMAIL_EDITED =
+            "Email edited successfully!";
+
+    public static final String ENTER_FIRST_NAME =
+            "Enter First name:";
+
+    public static final String ENTER_LAST_NAME =
+            "Enter Last name:";
 }

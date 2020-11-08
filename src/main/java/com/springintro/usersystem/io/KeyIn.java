@@ -1,3 +1,4 @@
+// http://www.java2s.com/Tutorials/Java/IO_How_to/Console/Create_a_Console_menu.htm
 package com.springintro.usersystem.io;
 
 public class KeyIn {

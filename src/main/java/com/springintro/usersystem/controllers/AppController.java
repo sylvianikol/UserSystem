@@ -1,12 +1,11 @@
 package com.springintro.usersystem.controllers;
 
 import com.google.gson.Gson;
+import com.springintro.usersystem.constants.Command;
 import com.springintro.usersystem.io.InputReader;
 import com.springintro.usersystem.io.KeyIn;
 import com.springintro.usersystem.io.OutputWriter;
-import com.springintro.usersystem.model.dtos.CountrySeedDto;
-import com.springintro.usersystem.model.dtos.UserLoginDto;
-import com.springintro.usersystem.model.dtos.UserRegisterDto;
+import com.springintro.usersystem.model.dtos.*;
 import com.springintro.usersystem.services.CountryService;
 import com.springintro.usersystem.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,9 +17,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.text.ParseException;
 
-import static com.springintro.usersystem.constants.GlobalConstants.COUNTRIES_FILE_PATH;
-import static com.springintro.usersystem.constants.GlobalConstants.MENU_SELECTION;
-import static com.springintro.usersystem.constants.GlobalMessages.COUNTRIES_SEEDED;
+import static com.springintro.usersystem.constants.Command.*;
+import static com.springintro.usersystem.constants.GlobalConstants.*;
+import static com.springintro.usersystem.constants.GlobalMessages.*;
 
 @Controller
 public class AppController implements CommandLineRunner {
@@ -54,37 +53,129 @@ public class AppController implements CommandLineRunner {
         // Seed Countries and Towns
 //        this.seedCountriesWithTowns();
 
-        // Register User
-//         this.registerNewUser();
+        Command command = START;
 
-        // Login User
-         this.loginUser();
-
-         this.editProfileInfo();
+        while (command != EXIT) {
+            command = this.showMainMenu();
+        }
 
    }
 
-    private void editProfileInfo() {
-        // TODO:
-        this.writer.writeLine(String.format(MENU_SELECTION));
-        int option = KeyIn.inInt(" Select option: ");
+    private Command showMainMenu() throws IOException {
+        Command command = START;
 
-        switch (option) {
-            case 1:
-                break;
-            case 2:
-                break;
-            case 3:
-                System.exit(0);
-            default:
-                break;
+        while (command != EXIT) {
+
+            this.writer.writeLine(String.format(MAIN_MENU));
+            int option = KeyIn.inInt(PROMPT);
+
+            UserEditDto userEditDto = null;
+
+            switch (option) {
+                case 1:
+                    userEditDto = this.loginUser();
+                    this.showUserMenu(userEditDto);
+                    break;
+                case 2:
+                    this.writer.writeLine(this.registerNewUser());
+//                    command = this.showUserMenu();
+                    break;
+                case 3:
+                    command = EXIT;
+                    break;
+                default:
+                    this.writer.writeLine(COMMAND_NOT_VALID);
+                    command = START;
+                    break;
+            }
         }
+
+        return command;
     }
 
-    private void loginUser() throws IOException {
-        String output = "ERROR!";
+    private Command showUserMenu(UserEditDto userEditDto) throws IOException {
+        Command command = START;
 
-        while (output.startsWith("ERROR!")) {
+        while (command != EXIT) {
+            this.writer.writeLine(String.format(USER_MENU));
+            int option = KeyIn.inInt(PROMPT);
+
+            switch (option) {
+                case 1:
+                    command = this.editProfile(userEditDto);
+                    break;
+                case 2:
+                    // Add Album
+                    break;
+                case 3:
+                    command = EXIT;
+                    break;
+                default:
+                    this.writer.writeLine(COMMAND_NOT_VALID);
+                    command = START;
+                    break;
+            }
+        }
+
+        return command;
+    }
+
+    private Command editProfile(UserEditDto userEditDto) throws IOException {
+        Command command = START;
+
+        while (command != BACK) {
+            this.writer.writeLine(String.format(PROFILE_MENU));
+            int option = KeyIn.inInt(PROMPT);
+
+            switch (option) {
+                case 1:
+                    this.editAge(userEditDto);
+                    break;
+                case 2:
+                    this.editEmail(userEditDto);
+                    break;
+                case 3:
+                    this.editName(userEditDto);
+                    break;
+                case 7:
+                    command = BACK;
+                    break;
+                default:
+                    this.writer.writeLine(COMMAND_NOT_VALID);
+                    break;
+            }
+        }
+
+        return command;
+    }
+
+    private void editName(UserEditDto userEditDto) throws IOException {
+        this.writer.writeLine(ENTER_FIRST_NAME);
+        String firstName = this.reader.readLine();
+        this.writer.writeLine(ENTER_LAST_NAME);
+        String lastName = this.reader.readLine();
+    }
+
+    private void editEmail(UserEditDto userEditDto) throws IOException {
+        this.writer.writeLine(ENTER_EMAIL);
+        String email = this.reader.readLine();
+        UserEditEmailDto userEditEmailDto =
+                new UserEditEmailDto(userEditDto.getId(), email);
+        this.userService.setNewEmail(userEditEmailDto);
+    }
+
+    private void editAge(UserEditDto userEditDto) throws IOException {
+        this.writer.writeLine(ENTER_AGE);
+        Integer age = Integer.parseInt(this.reader.readLine());
+        UserEditAgeDto userEditAgeDto = new UserEditAgeDto(userEditDto.getId(), age);
+        this.userService.setNewAge(userEditAgeDto);
+    }
+
+    private UserEditDto loginUser() throws IOException {
+
+        UserEditDto userEditDto = null;
+
+        while (userEditDto == null) {
             this.writer.writeLine("Enter username:");
             String username = this.reader.readLine();
             this.writer.writeLine("Enter password:");
@@ -92,12 +183,13 @@ public class AppController implements CommandLineRunner {
 
             UserLoginDto userLoginDto = new UserLoginDto(username, password);
 
-            output = this.userService.loginUser(userLoginDto);
-            this.writer.writeLine(output);
+            userEditDto = this.userService.loginUser(userLoginDto);
         }
+
+        return userEditDto;
     }
 
-    private void registerNewUser() throws IOException {
+    private String registerNewUser() throws IOException {
         String output = "INVALID";
 
         while (output.startsWith("INVALID")) {
@@ -111,8 +203,13 @@ public class AppController implements CommandLineRunner {
             UserRegisterDto userRegisterDto = new UserRegisterDto(username, password, email);
 
             output = this.userService.registerUser(userRegisterDto);
-            this.writer.writeLine(output);
+
+            if (output.startsWith("INVALID")) {
+                this.writer.writeLine(output);
+            }
         }
+
+        return output;
     }
 
     private void seedCountriesWithTowns() throws FileNotFoundException {
