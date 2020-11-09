@@ -3,11 +3,13 @@ package com.springintro.usersystem.services;
 import com.springintro.usersystem.model.dtos.*;
 import com.springintro.usersystem.model.dtos.edit.*;
 
+import java.io.IOException;
+
 public interface UserService {
 
-    String registerUser(UserRegisterDto userRegisterDto);
+    UserDto registerUser(UserRegisterDto userRegisterDto);
 
-    UserEditDto loginUser(UserLoginDto userLoginDto);
+    UserDto loginUser(UserLoginDto userLoginDto);
 
     void setNewAge(UserEditAgeDto userEditAgeDto);
 
@@ -17,7 +19,9 @@ public interface UserService {
 
     void setNewUsername(UserEditUsernameDto userEditUsernameDto);
 
-    boolean isValidPassword(UserEditDto userEditDto, String password);
+    boolean isValidPassword(UserDto userDto, String password);
 
     void setNewPassword(UserEditPassword userEditPassword);
+
+    void setNewAddress(UserEditAddressDto userEditAddressDto) throws IOException;
 }

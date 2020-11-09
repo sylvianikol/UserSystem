@@ -9,10 +9,8 @@ import java.util.Set;
 public class Country extends BaseEntity {
 
     private String name;
-    private Set<Town> towns;
 
     public Country() {
-        this.towns = new HashSet<>();
     }
 
     @Column(nullable = false)
@@ -22,14 +20,5 @@ public class Country extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    @OneToMany(mappedBy = "country", cascade = CascadeType.PERSIST)
-    public Set<Town> getTowns() {
-        return towns;
-    }
-
-    public void setTowns(Set<Town> towns) {
-        this.towns = towns;
     }
 }

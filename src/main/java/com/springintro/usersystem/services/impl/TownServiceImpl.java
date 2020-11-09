@@ -1,6 +1,8 @@
 package com.springintro.usersystem.services.impl;
 
 import com.springintro.usersystem.io.OutputWriter;
+import com.springintro.usersystem.model.dtos.TownIdDto;
+import com.springintro.usersystem.model.dtos.edit.TownEditDto;
 import com.springintro.usersystem.model.entities.Country;
 import com.springintro.usersystem.model.entities.Town;
 import com.springintro.usersystem.repositories.TownRepository;
@@ -30,10 +32,40 @@ public class TownServiceImpl implements TownService {
     }
 
     @Override
-    public void setCountry(Country country) {
-        for (Town town : country.getTowns()) {
-                town.setCountry(country);
+    public boolean existsTown(String townName) {
+        return this.findByName(townName) != null;
+    }
+
+    @Override
+    public Town findByName(String townName) {
+        return this.townRepository.findByName(townName).orElse(null);
+    }
+
+    @Override
+    public TownIdDto saveTown(TownEditDto townEditDto) {
+        TownIdDto townIdDto = new TownIdDto();
+
+        if (this.validationUtil.isValid(townEditDto)) {
+            String townName = townEditDto.getName();
+            Town town;
+            if (!existsTown(townName)) {
+                town = this.modelMapper.map(townEditDto, Town.class);
+                this.townRepository.saveAndFlush(town);
+            } else {
+                town = this.findByName(townName);
+            }
+            townIdDto.setId(town.getId());
+        } else {
+            this.writer.writeLine(this.validationUtil.getViolations(townEditDto));
+            townIdDto = null;
         }
-        this.townRepository.saveAll(country.getTowns());
+
+        return townIdDto;
+    }
+
+    @Override
+    public Town findById(Long id) {
+
+        return this.townRepository.findById(id).orElse(null);
     }
 }

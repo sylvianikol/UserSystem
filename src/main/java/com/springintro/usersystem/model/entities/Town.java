@@ -11,12 +11,7 @@ public class Town extends BaseEntity {
     private String name;
     private Country country;
 
-    private Set<User> bornUsers;
-    private Set<User> residents;
-
     public Town() {
-        this.bornUsers = new HashSet<>();
-        this.residents = new HashSet<>();
     }
 
     @Column(nullable = false)
@@ -35,23 +30,5 @@ public class Town extends BaseEntity {
 
     public void setCountry(Country country) {
         this.country = country;
-    }
-
-    @OneToMany(mappedBy = "homeTown", cascade = CascadeType.ALL)
-    public Set<User> getBornUsers() {
-        return bornUsers;
-    }
-
-    public void setBornUsers(Set<User> bornUsers) {
-        this.bornUsers = bornUsers;
-    }
-
-    @OneToMany(mappedBy = "residenceTown", cascade = CascadeType.ALL)
-    public Set<User> getResidents() {
-        return residents;
-    }
-
-    public void setResidents(Set<User> residents) {
-        this.residents = residents;
     }
 }

@@ -139,6 +139,9 @@ public class User extends BaseEntity {
     }
 
     @ManyToMany
+    @JoinTable(name = "friends_users",
+            joinColumns = @JoinColumn(name = "friend_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     public Set<User> getUsersWhoAreFriendsOfUser() {
         return usersWhoAreFriendsOfUser;
     }

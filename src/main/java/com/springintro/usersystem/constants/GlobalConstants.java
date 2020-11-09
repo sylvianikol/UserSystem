@@ -15,7 +15,8 @@ public class GlobalConstants {
             "|         USER MENU        |%n" +
             "| Options:                 |%n" +
             "|        1. Edit Profile   |%n" +
-            "|        2. Add Album      |%n" +
+            "|        2. Create Album   |%n" +
+            "|        3. Upload Photo   |%n" +
             "|        3. Exit           |%n";
 
     public static final String PROFILE_MENU =
@@ -32,4 +33,10 @@ public class GlobalConstants {
 
     public static final String NAME_REGEX =
             "[A-Za-z]{1}[A-Za-z\\s\\.\\-]+";
+
+    public static final String COUNTRY_REGEX =
+            "[A-Za-z]{1}[A-Za-z\\s\\.\\-,()&]+";
+
+    public static final String EMAIL_REGEX =
+            "[a-z0-9][a-z0-9\\.\\-_]+[a-z0-9]@[a-z0-9][a-z0-9]+(\\.*[a-z]+[a-z])+";
 }

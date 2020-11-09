@@ -7,9 +7,6 @@ public class GlobalMessages {
     public static final String COUNTRY_EXISTS =
             "Country '%s' is already in database!";
 
-    public static final String COUNTRIES_SEEDED =
-            "Countries and their Towns seeded successfully!";
-
     public static final String ENTER_USERNAME =
             "Enter username:";
 
@@ -124,9 +121,54 @@ public class GlobalMessages {
     public static final String ENTER_COUNTRY =
             "Enter country:";
 
+    public static final String ENTER_HOMETOWN =
+            "Enter hometown:";
+
+    public static final String ENTER_RESIDENCE =
+            "Enter residence town:";
+
     public static final String COUNTRY_NOT_NULL =
             "Country name can not be null!";
 
     public static final String COUNTRY_NOT_EMPTY =
             "Country name can not be empty!";
+
+    public static final String COUNTRY_INVALID =
+            "Country name should start with a letter and can contain only letters, spaces and [ ,()-& ]";
+
+    public static final String TOWN_NOT_NULL =
+            "Town can not be null!";
+
+    public static final String TOWN_NOT_EMPTY =
+            "Town name can not be empty!";
+
+    public static final String TOWN_INVALID =
+            "Town name should start with a letter and can contain only letters, spaces, dots, hyphens";
+
+    public static final String ADDRESS_EDITED =
+            "Address edited successfully!";
+
+    public static final String ENTER_ALBUM_NAME =
+            "Enter album name:";
+
+    public static final String ENTER_BACKGROUND =
+            "Enter background color:";
+
+    public static final String SET_TO_PUBLIC =
+            "Set to public (y/n):";
+
+    public static final String ALBUM_NAME_INVALID =
+            "Album name should be between 2 and 5 characters long.";
+
+    public static final String INVALID_ANSWER =
+            "'%s' is not a valid answer! Please answer with 'y' or 'n'.";
+
+    public static final String ALBUM_EXISTS =
+            "Album '%s' already exists!";
+
+    public static final String ALBUM_CREATED =
+            "Album '%s' created successfully!";
+
+
+
 }

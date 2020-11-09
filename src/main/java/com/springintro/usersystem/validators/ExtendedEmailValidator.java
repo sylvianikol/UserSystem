@@ -8,11 +8,12 @@ import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
+import static com.springintro.usersystem.constants.GlobalConstants.EMAIL_REGEX;
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-@Email(message="Please provide a valid email address")
-@Pattern(regexp=".+@.+\\..+", message="Please provide a valid email address")
+@Email(message = "Email must be a well-formed email address. Ex. 'user@host.com'")
+@Pattern(regexp = EMAIL_REGEX, message = "Please provide a valid email address")
 @Target( { METHOD, FIELD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
 @Constraint(validatedBy = {})

@@ -16,7 +16,6 @@ public class Album extends BaseEntity {
     private User user;
 
     public Album() {
-        this.pictures = new HashSet<>();
     }
 
     @Column
@@ -46,7 +45,7 @@ public class Album extends BaseEntity {
         isPublic = aPublic;
     }
 
-    @ManyToMany(mappedBy = "albums", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "albums", fetch = FetchType.EAGER)
     public Set<Picture> getPictures() {
         return pictures;
     }

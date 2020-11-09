@@ -1,10 +1,10 @@
-package com.springintro.usersystem.model.dtos.edit;
+package com.springintro.usersystem.model.dtos;
 
-public class UserEditDto {
+public class TownIdDto {
 
     private Long id;
 
-    public UserEditDto() {
+    public TownIdDto() {
     }
 
     public Long getId() {

@@ -46,6 +46,9 @@ public class Picture extends BaseEntity {
     }
 
     @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "pictures_albums",
+            joinColumns = @JoinColumn(name = "picture_id"),
+            inverseJoinColumns = @JoinColumn(name = "album_id"))
     public Set<Album> getAlbums() {
         return albums;
     }
